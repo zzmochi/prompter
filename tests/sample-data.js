@@ -1,0 +1,17 @@
+import {classify} from '../js/script-classifier.js';
+import {layoutSlides} from '../js/slide-layout.js';
+import {nextFilename} from '../js/file-versioning.js';
+const assert=(a,msg)=>{if(!a)throw Error(msg)};
+const input=['#1. MENT 1 [오프닝 인사]','[MC]','여러분, 안녕하세요!','(박수 유도)','[민수]','오늘 정말 반갑습니다.','GAME 2 [케미 퀴즈]','[MC] 오늘 가장 먼저 올 것 같은 멤버는?','① 멤버 A','② 멤버 B','(멤버 B)','노래: 새벽별','SONG: 마지막 노래','▶ LED 코너 타이틀 IN'];
+const parsed=classify(input);
+assert(parsed.sections.length===2,'section count');
+assert(parsed.speakers.includes('MC')&&parsed.speakers.includes('민수'),'speaker detection');
+assert(parsed.entries.some(x=>x.type==='ignored'&&x.text.includes('①')),'ignore screen choices');
+assert(parsed.entries.some(x=>x.type==='answer'&&x.text==='(멤버 B)'),'answer rendering');
+assert(parsed.entries.some(x=>x.type==='cue'&&x.text==='(박수 유도)'),'cue retained');
+assert(parsed.songs.length===2,'song recognition');
+const res=layoutSlides(parsed,{matches:new Map(),warnings:[]},'ipad','4:3');
+assert(res.slides.length>0,'nonempty slides');
+assert(nextFilename('2026-11-08','BTSconcert',['261108_BTSconcert_prompter_v1.pptx'])==='261108_BTSconcert_prompter_v2.pptx','shared next version');
+assert(nextFilename('2026-11-08','BTSconcert',[])==='261108_BTSconcert_prompter_v1.pptx','first version');
+console.log('Unit tests passed');

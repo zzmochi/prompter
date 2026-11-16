@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <title>Prompter Studio — 韓文活動提詞 PPT</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">P<span>·</span></div><div><strong>Prompter Studio</strong><small>LIVE SHOW TOOLKIT</small></div></div>
+      <span class="status"><span class="dot"></span>本機處理 · 不上傳腳本</span>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow">TELEPROMPTER · POWERPOINT</div>
+        <h1>讓台詞準確登場。<br><em>把排版留給系統。</em></h1>
+        <p>匯入韓文演出腳本與歌詞，自動辨識講者、環節和舞台提示，確認摘要後生成專屬 iPad 或 Windows 的提詞 PPTX。</p>
+      </section>
+      <section class="workspace" aria-label="提詞機產生工作區">
+        <div class="panel setup">
+          <div class="step-heading"><span class="step">01</span><div><h2>準備活動資料</h2><p>選擇活動資料夾，或單獨加入腳本與歌詞。</p></div></div>
+          <div class="picker-row">
+            <button id="pickFolder" class="btn btn-accent" type="button"> <span aria-hidden="true">▣</span> 選擇活動資料夾</button>
+            <span class="or">或</span>
+            <label class="btn btn-outline" for="scriptInput">選擇腳本</label>
+            <input id="scriptInput" type="file" accept=".docx,.doc" multiple hidden>
+            <label class="btn btn-outline" for="lyricsInput">加入歌詞檔</label>
+            <input id="lyricsInput" type="file" accept=".docx,.doc,.txt" multiple hidden>
+          </div>
+          <p class="help">Word .docx 可直接解析；舊版 .doc 請先在 Word 另存成 .docx。資料夾直接儲存功能取決於瀏覽器授權。</p>
+          <div id="fileList" class="file-list" aria-live="polite"><div class="empty"><span class="empty-icon">▤</span>尚未選取腳本</div></div>
+          <div class="hr"></div>
+          <div class="fields">
+            <label>演出日期<input id="eventDate" type="date" required></label>
+            <label>藝人＆活動名稱 <span class="hint">檔名的一部分</span><input id="eventName" type="text" maxlength="100" placeholder="例如 BTSconcert" autocomplete="off" required></label>
+          </div>
+        </div>
+        <div class="panel config">
+          <div class="step-heading"><span class="step">02</span><div><h2>選擇提詞設備</h2><p>內容規則一致，依設備調整比例和字級。</p></div></div>
+          <div class="device-choice" role="group" aria-label="提詞設備">
+            <button type="button" class="device active" data-device="ipad" aria-pressed="true"><span class="device-icon">▯</span><strong>iPad</strong><small>大字優先 · 96–115 pt</small></button>
+            <button type="button" class="device" data-device="windows" aria-pressed="false"><span class="device-icon">▣</span><strong>Windows</strong><small>遠距閱讀 · 60–80 pt</small></button>
+          </div>
+          <label class="select-label" for="ratio">螢幕顯示比例</label>
+          <select id="ratio"><option value="4:3">4:3 — 平板常見比例</option><option value="16:9">16:9 — 寬螢幕</option><option value="16:10">16:10 — 寬螢幕平板／筆電</option><option value="3:2">3:2 — 平板／筆電</option></select>
+          <div class="spec-grid"><div><span>背景</span><strong>全黑</strong></div><div><span>台詞</span><strong>白色粗體</strong></div><div><span>講者</span><strong>獨立分頁</strong></div><div><span>字型</span><strong>Malgun Gothic</strong></div></div>
+          <button id="analyze" type="button" class="btn btn-primary full">分析腳本 <span aria-hidden="true">→</span></button>
+          <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+      <section id="review" class="panel review hidden" aria-labelledby="reviewTitle">
+        <div class="review-top"><div class="step-heading"><span class="step">03</span><div><h2 id="reviewTitle">確認解析摘要</h2><p>請確認偵測到的內容與提示，再產生 PPTX。</p></div></div><button id="reanalyze" class="text-btn" type="button">重新分析</button></div>
+        <div id="stats" class="stats"></div>
+        <div class="review-cols"><div><h3>環節與講者</h3><div id="outline" class="outline"></div></div><div><h3>歌詞配對與注意事項</h3><div id="warnings" class="warnings"></div></div></div>
+        <div class="actions"><div><strong id="outputName"></strong><small>存入 Output/（具權限時）或下載到瀏覽器</small></div><button id="generate" class="btn btn-accent" type="button">確認並生成 PPTX ↓</button></div>
+      </section>
+    </main>
+    <footer>Prompter Studio <span>·</span> 依 AGENTS.md 製作 <span>·</span> 內容在你的裝置上處理</footer>
+  </div>
+  <script src="./vendor/jszip.min.js"></script>
+  <script src="./vendor/pptxgen.min.js"></script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

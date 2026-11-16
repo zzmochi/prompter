@@ -1,0 +1,12 @@
+import PptxGenJS from '/opt/nvm/versions/node/v22.16.0/lib/node_modules/pptxgenjs/dist/pptxgen.cjs.js';
+import {classify} from '../js/script-classifier.js';
+import {layoutSlides} from '../js/slide-layout.js';
+import {generatePptx} from '../js/pptx-generator.js';
+import {writeFileSync} from 'node:fs';
+globalThis.window={PptxGenJS};
+const data=['#1. MENT 1 [오프닝 인사]','[MC]','여러분, 안녕하세요!','(박수 유도)','[민수] 오늘 정말 반갑습니다.','GAME 2 [케미 테스트]','[MC] 가장 먼저 도착한 멤버는?','① 멤버 A','(멤버 B)','SONG: Moonlight','GAME 3 [비밀]'];
+const parsed=classify(data);const matches=new Map([[parsed.songs[0].index,{lines:['첫 번째 가사입니다.','두 번째 가사입니다.','첫 번째 가사입니다.']}]]);
+const {slides}=layoutSlides(parsed,{matches,warnings:[]},'windows','16:9');
+const blob=await generatePptx(slides,'windows','16:9');
+writeFileSync('/tmp/prompter-test.pptx',Buffer.from(await blob.arrayBuffer()));
+console.log('slides:',slides.length,'bytes:',blob.size);
